@@ -12,17 +12,17 @@ class TwoLayerNet:
                  weight_init_std=0.01):
         #初始化权重
         self.params = {}
-        self.params['w1'] = weight_init_std*\
+        self.params['W1'] = weight_init_std*\
                             np.random.randn(input_size,hidden_size)
 
         self.params['b1'] = np.zeros(hidden_size)
-        self.params['w2'] = weight_init_std*np.zeros(hidden_size,output_size)
+        self.params['W2'] = weight_init_std*np.random.randn(hidden_size,output_size)
         self.params['b2'] = np.zeros(output_size)
         #生成层
         self.layers = OrderedDict()
-        self.layers['Affine1'] = Affine(self.params['w1'],self.params['b1'])
+        self.layers['Affine1'] = Affine(self.params['W1'],self.params['b1'])
         self.layers['Relu1'] = Relu()
-        self.layers['Affine2'] = Affine(self.params['w2'],self.params['b2'])
+        self.layers['Affine2'] = Affine(self.params['W2'],self.params['b2'])
 
         self.lastlayer = SoftmaxWithLoss()
 
@@ -46,13 +46,13 @@ class TwoLayerNet:
 
     #x:输入数据， t:监督数据
     def numerical_gradient(self,x,t):
-        loss_w = lambda W:self.loss(x,t)
+        loss_W = lambda W:self.loss(x,t)
         grads = {}
 
-        grads['w1'] = numerical_gradient(loss_w,self.params['w1'])
-        grads['b1'] = numerical_gradient(loss_w,self.params['b1'])
-        grads['w2'] = numerical_gradient(loss_w,self.params['w2'])
-        grads['b2'] = numerical_gradient(loss_w,self.params['b2'])
+        grads['W1'] = numerical_gradient(loss_W,self.params['W1'])
+        grads['b1'] = numerical_gradient(loss_W,self.params['b1'])
+        grads['W2'] = numerical_gradient(loss_W,self.params['W2'])
+        grads['b2'] = numerical_gradient(loss_W,self.params['b2'])
 
         return grads
 
@@ -72,9 +72,9 @@ class TwoLayerNet:
         #设定
 
         grads = {}
-        grads['w1'] = self.layers['Affine1'].dW
-        grads['b2'] = self.layers['Affine1'].db
-        grads['w1'] = self.layers['Affine2'].dW
+        grads['W1'] = self.layers['Affine1'].dW
+        grads['b1'] = self.layers['Affine1'].db
+        grads['W2'] = self.layers['Affine2'].dW
         grads['b2'] = self.layers['Affine2'].db
 
         return grads
