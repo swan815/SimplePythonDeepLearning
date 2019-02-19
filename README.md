@@ -1,0 +1,2 @@
+# SimplePythonDeepLearning
+DeepLearning from Scratch
